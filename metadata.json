@@ -1,0 +1,6 @@
+{
+  "name": "MenuPro",
+  "description": "Plataforma SaaS de Cardápio Digital para Restaurantes",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

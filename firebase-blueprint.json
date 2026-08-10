@@ -1,0 +1,131 @@
+{
+  "entities": {
+    "usuarios": {
+      "title": "Usuarios",
+      "description": "Usuários do sistema MenuPro (Admins, Restaurantes e Clientes)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "nome": { "type": "string" },
+        "email": { "type": "string" },
+        "tipo": { "type": "string", "enum": ["admin", "restaurante", "cliente"] },
+        "restauranteId": { "type": "string" },
+        "criadoEm": { "type": "string" }
+      },
+      "required": ["email", "tipo"]
+    },
+    "restaurantes": {
+      "title": "Restaurantes",
+      "description": "Restaurantes cadastrados na plataforma SaaS",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "nome": { "type": "string" },
+        "slug": { "type": "string" },
+        "logo": { "type": "string" },
+        "telefone": { "type": "string" },
+        "whatsapp": { "type": "string" },
+        "endereco": { "type": "string" },
+        "horarioFuncionamento": { "type": "string" },
+        "plano": { "type": "string" },
+        "planoId": { "type": "string" },
+        "ativo": { "type": "boolean" },
+        "criadoEm": { "type": "string" }
+      },
+      "required": ["nome", "slug", "ativo"]
+    },
+    "produtos": {
+      "title": "Produtos",
+      "description": "Itens do cardápio dos restaurantes",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "restauranteId": { "type": "string" },
+        "nome": { "type": "string" },
+        "descricao": { "type": "string" },
+        "categoria": { "type": "string" },
+        "preco": { "type": "number" },
+        "imagem": { "type": "string" },
+        "disponivel": { "type": "boolean" }
+      },
+      "required": ["restauranteId", "nome", "preco", "disponivel"]
+    },
+    "pedidos": {
+      "title": "Pedidos",
+      "description": "Pedidos realizados pelos clientes",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "restauranteId": { "type": "string" },
+        "clienteNome": { "type": "string" },
+        "telefone": { "type": "string" },
+        "endereco": { "type": "string" },
+        "tipoEntrega": { "type": "string", "enum": ["entrega", "retirada"] },
+        "formaPagamento": { "type": "string" },
+        "trocoPara": { "type": "string" },
+        "produtos": { "type": "array" },
+        "valorTotal": { "type": "number" },
+        "status": { "type": "string" },
+        "observacao": { "type": "string" },
+        "data": { "type": "string" }
+      },
+      "required": ["restauranteId", "clienteNome", "produtos", "valorTotal", "status"]
+    },
+    "clientes": {
+      "title": "Clientes",
+      "description": "Clientes dos restaurantes",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "restauranteId": { "type": "string" },
+        "nome": { "type": "string" },
+        "telefone": { "type": "string" },
+        "endereco": { "type": "string" },
+        "totalPedidos": { "type": "number" },
+        "totalGasto": { "type": "number" },
+        "criadoEm": { "type": "string" }
+      },
+      "required": ["restauranteId", "nome", "telefone"]
+    },
+    "planos": {
+      "title": "Planos",
+      "description": "Planos SaaS para restaurantes",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "nome": { "type": "string" },
+        "descricao": { "type": "string" },
+        "preco": { "type": "number" },
+        "limiteProdutos": { "type": "number" },
+        "recursos": { "type": "array" },
+        "ativo": { "type": "boolean" }
+      },
+      "required": ["nome", "preco", "ativo"]
+    },
+    "mesas": {
+      "title": "Mesas",
+      "description": "Mesas e comandas do restaurante",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "restauranteId": { "type": "string" },
+        "numero": { "type": "string" },
+        "nome": { "type": "string" },
+        "qrCodeUrl": { "type": "string" },
+        "status": { "type": "string", "enum": ["Livre", "Ocupada", "Aguardando Pagamento"] },
+        "criadoEm": { "type": "string" }
+      },
+      "required": ["restauranteId", "numero", "status"]
+    },
+    "configuracoes": {
+      "title": "Configuracoes",
+      "description": "Configurações SaaS da plataforma",
+      "type": "object",
+      "properties": {
+        "chavePix": { "type": "string" },
+        "titularPix": { "type": "string" },
+        "banco": { "type": "string" }
+      }
+    }
+  }
+}

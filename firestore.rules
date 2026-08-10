@@ -1,0 +1,94 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email != null && (
+          request.auth.token.email.lower() == 'eliavelozo6@gmail.com' ||
+          request.auth.token.email.lower() == 'admin@menupro.com'
+        )
+      );
+    }
+
+    // Coleção usuarios
+    match /usuarios/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow delete: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+    }
+
+    // Coleção restaurantes
+    match /restaurantes/{restauranteId} {
+      allow read: if true; // Leitura pública do cardápio e restaurante
+      allow create: if true; // Cadastro inicial de restaurantes
+      allow update, delete: if isAuthenticated();
+    }
+
+    // Coleção produtos
+    match /produtos/{produtoId} {
+      allow read: if true; // Exibição pública no cardápio
+      allow create, update, delete: if isAuthenticated(); // Alterar cardápio exige login
+    }
+
+    // Coleção pedidos
+    match /pedidos/{pedidoId} {
+      allow read, create: if true; // Clientes criam e acompanham pedidos
+      allow update, delete: if isAuthenticated(); // Mudar status ou excluir exige login
+    }
+
+    // Coleção clientes
+    match /clientes/{clienteId} {
+      allow read, create, update: if true; // Clientes salvam/atualizam dados ao pedir
+      allow delete: if isAuthenticated();
+    }
+
+    // Coleção planos
+    match /planos/{planoId} {
+      allow read: if true; // Visível nas tabelas de preços
+      allow create, update, delete: if isAuthenticated();
+    }
+
+    // Coleção cupons
+    match /cupons/{cupomId} {
+      allow read: if true; // Clientes aplicam cupom no checkout
+      allow create, update, delete: if isAuthenticated(); // Gerenciamento exige login
+    }
+
+    // Coleção taxas_bairros
+    match /taxas_bairros/{taxaId} {
+      allow read: if true; // Cálculo de entrega no checkout
+      allow create, update, delete: if isAuthenticated(); // Alteração exige login
+    }
+
+    // Coleção avaliacoes
+    match /avaliacoes/{avaliacaoId} {
+      allow read, create: if true; // Clientes visualizam e enviam avaliações
+      allow update, delete: if isAuthenticated(); // Excluir/alterar exige login
+    }
+
+    // Coleção mesas
+    match /mesas/{mesaId} {
+      allow read: if true; // Leitura do status das mesas
+      allow create, update, delete: if isAuthenticated(); // Gerenciamento exige login
+    }
+
+    // Coleção configuracoes
+    match /configuracoes/{configId} {
+      allow read: if true; // Leitura de chaves Pix e dados públicos do SaaS
+      allow create, update, delete: if isAuthenticated(); // Alteração de configurações exige login
+    }
+
+    // Coleção avisos_sistema
+    match /avisos_sistema/{avisoId} {
+      allow read: if true; // Leitura pública de comunicados e avisos
+      allow create, update, delete: if isAuthenticated(); // Criação e alteração exige login
+    }
+  }
+}

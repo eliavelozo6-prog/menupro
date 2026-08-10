@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Allow: /c/
+Allow: /cadastro
+Allow: /login
+Allow: /acompanhar/
+
+Disallow: /painel/
+Disallow: /saas-admin/
+Disallow: /api/
+
+Sitemap: https://menupro.app/sitemap.xml
